@@ -1,7 +1,12 @@
 class EventsController < ApplicationController
   skip_before_action :authenticate, only: :show
+
   def new
     @event = current_user.created_events.build
+  end
+
+  def edit
+    @event = current_user.created_events.find(params[:id])
   end
 
   def show
@@ -14,6 +19,19 @@ class EventsController < ApplicationController
     if @event.save
       redirect_to @event, notice: "作成しました"
     end
+  end
+
+  def update
+    @event = current_user.created_events.find(params[:id])
+    if @event.update(event_params)
+      redirect_to @event, notice: "更新しました"
+    end
+  end
+
+  def destroy
+    @event = current_user.created_events.find(params[:id])
+    @event.destroy!
+    redirect_to root_path, notice: "削除しました"
   end
 
   def event_params
