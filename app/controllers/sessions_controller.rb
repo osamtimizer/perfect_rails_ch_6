@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  skip_before_action :authenticate, only: :create
+
   def create
     # find_or_create_from_auth_hash! will be implemented in user class.
     user = User.find_or_create_from_auth_hash!(request.env["omniauth.auth"])
